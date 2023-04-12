@@ -1,0 +1,145 @@
+
+syntax = "proto3";
+
+package mobile_account;
+
+option go_package = "proto/mobile;mobile_book_keeping";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.populate_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+enum StatusCode {
+  status_success = 0;
+  status_internal_error = 1;
+  status_param_error = 2;
+  status_has_bill_error = 3;
+}
+
+message Status {
+  StatusCode code = 1 [(gogoproto.jsontag) = "code"];
+  string msg = 2;
+}
+
+// The greeting service definition.
+service BookKeepingService {
+  // Sends a greeting
+  rpc ListCategorys (ListCategorysRequest) returns (ListCategorysResponse)  {}
+
+  //获取账户信息
+  rpc ListAccountFunds (ListAccountFundsRequest)  returns (ListAccountFundsResponse)  {}
+
+  //创建账户
+  rpc CreatetAccountFunds (CreatetAccountFundsRequest) returns (CreatetAccountFundsResponse) {}
+
+  //删除账单
+  rpc DeletetAccountFunds (DeletetAccountFundsRequest) returns (DeletetAccountFundsResponse) {}
+
+  //创建账单
+  rpc CreateBill (CreateBillRequest) returns (CreateBillResponse) {}
+
+  //转移账单
+  rpc  TransferBillToAccountFunds (TransferBillToAccountFundsRequest) returns (TransferBillToAccountFundsResponse) {}
+
+}
+
+
+enum BillType {
+  bill_type_pay = 0; //支出
+  bill_type_income = 1; //收入
+}
+
+message ListCategorysRequest {
+  int64 pid = 1;
+}
+
+message Category {
+  int64  id = 1;
+  string  name = 2;
+  string icon = 3;
+}
+
+
+message ListCategorysResponse {
+  Status status = 1;
+  repeated Category list = 2;
+}
+
+
+//账户
+message AccountFunds {
+  int64 account_funds_id = 1;
+  int64 user_id = 2;
+  string name = 3;
+  string icon = 4;
+  int64 weight = 5;
+  int64 create_time = 6;
+}
+
+
+//记账
+message Bill {
+  int64 bill_id  = 1;
+  int64 user_id  = 2;
+  int64 category_id  = 3;
+  string remark  = 4;
+  int64 price  = 5;
+  BillType bill_type = 6;
+  int64 week = 7;
+  int64 year = 8;
+  int64 month = 9;
+  int64 day = 10;
+  int64 account_funds_id = 11;
+  int64 create_time = 12;
+}
+
+
+message ListAccountFundsRequest {
+  int64 user_id = 1;
+}
+
+message  ListAccountFundsResponse  {
+  Status status = 1;
+  repeated  AccountFunds list = 2;
+}
+
+message CreateBillRequest {
+  int64  user_id = 1;
+  Bill bill = 2;
+}
+
+message CreateBillResponse {
+  Status status = 1;
+}
+
+message CreatetAccountFundsRequest {
+  int64 user_id = 1;
+  AccountFunds info = 2;
+}
+
+message CreatetAccountFundsResponse {
+  Status status = 1;
+}
+
+message DeletetAccountFundsRequest {
+  int64 user_id = 1;
+  int64 account_funds_id  = 2;
+}
+
+message DeletetAccountFundsResponse {
+  Status status = 1;
+}
+
+message TransferBillToAccountFundsRequest {
+  int64 user_id = 1;
+  int64 bill_id = 2;
+  int64 account_funds_id  = 3;
+}
+
+message TransferBillToAccountFundsResponse {
+  Status status = 1;
+}

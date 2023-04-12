@@ -1,0 +1,856 @@
+syntax = "proto3";
+
+package fishing_user;
+
+
+option go_package = "proto/mobile;mobile_fishing";
+
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.populate_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+enum StatusCode {
+  status_success = 0;
+  status_internal_error = 1;
+  status_param_error = 2;
+  status_repeat_follow_error = 3;
+  status_user_like_error = 4;
+  status_user_collection_error = 5;
+  status_infomation_saldo_error = 6;
+  status_infomation_pay_error = 7;
+  status_block_error = 99;
+}
+
+message Status {
+  StatusCode code = 1 [(gogoproto.jsontag) = "code"];
+  string msg = 2;
+}
+
+enum ClientPlatformType {
+  client_wechat_platform = 0;
+}
+
+enum UserStatus {
+    user_status_default = 0; //正常
+    user_status_block = 1; // 拉黑
+}
+
+
+// The greeting service definition.
+service MobileFishingService {
+  // Sends a greeting
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse)  {}
+
+  rpc WechatLogin (WechatLoginRequest)  returns (WechatLoginResponse)  {}
+
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
+
+  rpc GetUserExtend (GetUserExtendRequest) returns (GetUserExtendResponse) {}
+
+  //banner图
+  rpc ListBanners (ListBannersRequest) returns (ListBannersResponse) {}
+
+  rpc GetInfomationConfig (GetInfomationConfigRequest) returns (GetInfomationConfigResponse) {}
+  //关注
+  rpc UserFollow (UserFollowRequest) returns (UserFollowResponse) {}
+  //取消关注
+  rpc CancelUserFollow (CancelUserFollowRequest) returns (CancelUserFollowResponse) {}
+  //关注列表
+  rpc ListUserFollows (ListUserFollowsRequest) returns (ListUserFollowsResponse) {}
+
+  rpc UserCollection (UserCollectionRequest) returns (UserCollectionResponse) {}
+
+  rpc ListInfomations (ListInfomationsRequest) returns (ListInfomationsResponse) {}
+
+  rpc DeleteInfomation (DeleteInfomationRequest) returns (DeleteInfomationResponse) {}
+
+  rpc GetInfomation (GetInfomationRequest) returns (GetInfomationResponse) {}
+
+  rpc UserInfomationLike (UserInfomationLikeRequest) returns (UserInfomationLikeResponse) {}
+
+  rpc UserInfomationCollection (UserInfomationCollectionRequest) returns (UserInfomationCollectionResponse) {}
+
+  rpc ListActicleCategorys (ListActicleCategorysRequest) returns (ListActicleCategorysResponse) {}
+
+  rpc GetActicleConfig (GetActicleConfigRequest) returns (GetActicleConfigResponse) {}
+
+  rpc DeleteActicle (DeleteArticleRequest) returns (DeleteArticleResponse) {}
+
+  rpc ListActiclesByCategory (ListActiclesByCategoryRequest) returns (ListActiclesByCategoryResponse) {}
+
+  rpc GetArticle (GetArticleRequest) returns (GetArticleResponse)  {}
+
+  rpc UserArticleLike (UserArticleLikeRequest) returns (UserArticleLikeResponse) {}
+
+  rpc UserArticleCollection (UserArticleCollectionRequest) returns (UserArticleCollectionResponse) {}
+
+  rpc GetArticleTheme (GetArticleThemeRequest) returns (GetArticleThemeResponse) {}
+
+  rpc GetArticleTag (GetArticleTagRequest) returns (GetArticleTagResponse) {}
+
+  rpc ListActiclesByTag (ListActiclesByTagRequest) returns (ListActiclesByTagResponse) {}
+  rpc ListUserArticles (ListUserArticlesRequest) returns (ListUserArticlesResponse) {}
+  rpc ListUserInfomations (ListUserInfomationsRequest) returns (ListUserInfomationsResponse) {}
+
+  rpc SendComment (SendCommentRequest) returns (SendCommentResponse) {}
+
+  rpc UserCommentLike (UserCommentLikeRequest) returns (UserCommentLikeResponse) {}
+
+  rpc ListComments (ListCommentsRequest) returns (ListCommentsResponse) {}
+
+  rpc CheckUserFollw (CheckUserFollwRequest) returns (CheckUserFollwResponse) {}
+
+  rpc ListMessages (ListMessagesRequest) returns (ListMessagesResponse) {}
+
+  rpc UserMessageRead (UserMessageReadRequest) returns (UserMessageReadResponse) {}
+
+  rpc UserMessageReadAll (UserMessageReadAllRequest) returns (UserMessageReadAllResponse) {}
+
+
+  rpc GetUserMessageUnCount (GetUserMessageUnCountRequest) returns (GetUserMessageUnCountResponse) {}
+
+  rpc CreateInfomationOrder (CreateInfomationOrderRequest) returns (CreateInfomationOrderResponse) {}
+
+  rpc GetInfomationOrder (GetInfomationOrderRequest) returns (GetInfomationOrderResponse) {}
+
+  rpc CheckInfomationOrderBuy (CheckInfomationOrderBuyRequest) returns (CheckInfomationOrderBuyResponse) {}
+
+  rpc ListUserInfomationOrders (ListUserInfomationOrdersRequest) returns (ListUserInfomationOrdersResponse) {}
+
+  rpc ListFans (ListFansRequest) returns (ListFansResponse) {}
+
+  rpc CreateArticle(CreateArticleRequest) returns (CreateArticleResponse) {}
+}
+
+// The request message containing the user's name.
+message RefreshTokenRequest {
+  int64 user_id = 3;
+}
+
+// The response message containing the greetings
+message RefreshTokenResponse {
+  Status status = 1;
+}
+
+
+message WechatLoginRequest {
+  string jscode = 1;
+  string encrypted_data = 2;
+  string iv = 3;
+}
+
+message WechatLoginResponse {
+  Status status = 1;
+  string jwt = 2;
+  User  info = 3;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+}
+
+message GetUserExtendRequest {
+  int64 user_id = 1;
+}
+
+message UserExtend {
+  int64 follow_count = 1 [(gogoproto.jsontag) = "follow_count"];
+  int64 fans_count = 2 [(gogoproto.jsontag) = "fans_count"];
+  int64 invite_count = 6 [(gogoproto.jsontag) = "invite_count"];
+  int64 un_read_count = 3 [(gogoproto.jsontag) = "un_read_count"];
+  int64 infomation_count = 4 [(gogoproto.jsontag) = "infomation_count"];
+  int64 article_count = 5 [(gogoproto.jsontag) = "article_count"];
+}
+
+message GetUserExtendResponse {
+  Status status = 1;
+  UserExtend info = 2;
+}
+enum UserType {
+    user_type_vip = 0;
+    user_type_admin = 1;
+}
+
+message User {
+  int64 user_id = 1;
+  string avatar =  2;
+  string mobile =  3 [(gogoproto.jsontag) = "mobile"];
+  string nick_name =  4;
+  int64 register_time = 5;
+  UserType user_type = 6 [(gogoproto.jsontag) = "user_type"];
+  int64 point_amount = 7 [(gogoproto.jsontag) = "point_amount"];
+  int64 coin_amount = 8 [(gogoproto.jsontag) = "coin_amount"];
+  string motto = 9;
+  UserExtend user_extend = 10;
+  int64 coin_total  = 11 [(gogoproto.jsontag) = "coin_total"];  //收入汇总
+  int64 coin_pay_total  = 12 [(gogoproto.jsontag) = "coin_pay_total"];  //购买汇总
+  int64 coin_refill_total  = 13 [(gogoproto.jsontag) = "coin_refill_total"];  //充值汇总
+}
+
+message GetUserResponse {
+  Status status = 1;
+  User info = 2;
+}
+
+
+
+enum BannerType {
+  banner_type_infomation = 0;
+  banner_type_active = 1;
+}
+
+//跳转类型 0, 鱼获 1，文章 ，2 主题 ,3，充值，4,webview，5 发布钓点 6，发布鱼饵，7 发布文章，8，我的账户
+enum BannerViewType {
+    banner_view_type_infomation = 0;
+    banner_view_type_active = 1;
+    banner_view_type_theme = 2;
+    banner_view_type_recharge = 3;
+    banner_view_type_webview = 4;
+    banner_view_type_pub_location = 5;
+    banner_view_type_pub_bait = 6;
+    banner_view_type_pub_active = 7;
+    banner_view_type_me_account = 8;
+
+
+}
+
+message ListBannersRequest {
+   BannerType banner_type = 2;
+}
+
+message Banner {
+  string image_url  = 1 [(gogoproto.jsontag) = "image_url"];
+  BannerViewType view_type  = 2 [(gogoproto.jsontag) = "view_type"];
+  int64 external_id = 3 [(gogoproto.jsontag) = "external_id"];
+  string title = 4 [(gogoproto.jsontag) = "title"];
+  string link_url = 5 [(gogoproto.jsontag) = "link_url"];
+  int64 theme_id = 6 [(gogoproto.jsontag) = "theme_id"];
+}
+
+
+message ListBannersResponse {
+  Status status = 1;
+  repeated Banner list = 2;
+}
+
+message UserFollowRequest {
+  int64 user_id = 1;
+  int64 follow_user_id = 2;
+}
+
+message CancelUserFollowRequest {
+  int64 user_id = 1;
+  int64 follow_user_id = 2;
+}
+
+message CancelUserFollowResponse {
+  Status status = 1;
+}
+
+message UserFollowResponse {
+  Status status = 1;
+}
+
+
+message ListUserFollowsRequest {
+  int64 user_id = 1;
+  int64 page = 2;
+  int64 page_size = 3;
+}
+
+message ListUserFollowsResponse {
+  Status status = 1;
+  repeated User list = 2;
+}
+
+message UserCollectionRequest {
+  int64 user_id = 1;
+  int64 active_id = 2;
+}
+
+message UserCollectionResponse {
+  Status status = 1;
+}
+
+message GetInfomationConfigRequest {
+
+}
+
+enum InfomationCategoryType {
+    infomation_type_new = 0; //最新
+    infomation_type_nearby = 1; //附近
+    infomation_type_free = 2; // 免费
+    infomation_type_charge = 3; //收费
+    infomation_type_follow = 4;  //关注
+
+}
+
+
+message InfomationCategory {
+  InfomationCategoryType infomation_category_type = 1 [(gogoproto.jsontag) = "infomation_category_type"];
+    string name = 2;
+}
+
+message GetInfomationConfigResponse {
+  Status status = 1;
+  repeated Banner list_banners = 2;
+  repeated InfomationCategory list_infomation_category = 3;
+
+}
+
+message ListInfomationsRequest {
+  InfomationCategoryType infomation_category_type = 1;
+    int64 page = 2;
+    int64 page_size = 3;
+    string province = 4;
+    string city = 5;
+    int64 user_id = 6;
+  double latitude = 7;
+  double longitude = 8;
+}
+
+message ListUserInfomationsRequest {
+  int64 page = 2;
+  int64 page_size = 3;
+  int64 user_id = 6;
+  double latitude = 7;
+  double longitude = 8;
+  int64  release_user_id = 9;
+}
+
+message ListUserInfomationsResponse {
+  Status status = 1;
+  repeated Infomation list = 2;
+}
+
+
+enum InfomationStatus {
+    infomation_status_default = 0; //待审核
+    infomation_status_author_pass = 1; //审核通过
+    infomation_status_author_reject = -1; //审核驳回
+
+}
+
+enum InfomationType {
+    infomation_type_location = 0; //钓点
+    infomation_type_bait = 1; //饵料
+
+}
+enum PayType {
+    pay_type_free = 0; //免费
+    pay_type_charge = 1; // 收费
+}
+
+message Infomation {
+  int64 infomation_id = 1;
+  InfomationType infomation_type = 3 [(gogoproto.jsontag) = "infomation_type"];
+  int64  user_id = 4;
+  string country = 5;
+  string city = 6;
+  string district = 7;
+  string content = 8;
+  string park = 9;
+  int64 create_time = 10;
+  PayType pay_type = 11 [(gogoproto.jsontag) = "pay_type"];
+  int64 price = 12  [(gogoproto.jsontag) = "price"];
+  repeated string list_tags = 13;
+  repeated string list_infomation_images = 14;
+  repeated string list_env_images = 15;
+  string avatar =  16;
+  string nick_name =  17;
+  int64 like_count = 18 [(gogoproto.jsontag) = "like_count"]; //点赞数量
+  int64 comment_count = 19 [(gogoproto.jsontag) = "comment_count"]; //评论
+  int64 collect_count = 20 [(gogoproto.jsontag) = "collect_count"]; //收藏数量
+  int64 read_count = 21 [(gogoproto.jsontag) = "read_count"]; //热度
+  double distance = 22 [(gogoproto.jsontag) = "distance"]; //距离
+  InfomationCategoryType infomation_category_type = 23[(gogoproto.jsontag) = "infomation_category_type"];
+  int64 infomation_image_count = 24 [(gogoproto.jsontag) = "infomation_image_count"];
+  bool if_like = 25  [(gogoproto.jsontag) = "if_like"];
+  bool if_collection = 26 [(gogoproto.jsontag) = "if_collection"];
+  double latitude = 27 [(gogoproto.jsontag) = "latitude"];
+  double longitude = 28 [(gogoproto.jsontag) = "longitude"];
+  int64 env_image_count = 29 [(gogoproto.jsontag) = "env_image_count"];
+  bool if_buy = 30  [(gogoproto.jsontag) = "if_buy"];
+  bool is_follow = 31  [(gogoproto.jsontag) = "is_follow"];
+  repeated Bait list_baits = 32  [(gogoproto.jsontag) = "list_baits"];
+  int64 bait_image_count = 33  [(gogoproto.jsontag) = "bait_image_count"];
+
+}
+
+message Bait {
+ string image  = 1;
+ string bait_name = 2;
+ int64 bait_percent = 3;
+}
+
+message ListInfomationsResponse {
+  Status status = 1;
+  repeated Infomation list = 2;
+}
+
+
+enum UserLikeType {
+    user_like_type_infomation = 0;
+    user_like_type_active = 1;
+}
+
+enum UserColltionType {
+  user_colltion_type_infomation = 0;
+  user_colltion_type_active = 1;
+}
+
+
+message GetInfomationRequest {
+   int64 user_id = 1;
+   int64 infomation_id = 2;
+  double latitude = 27;
+  double longitude = 28;
+
+}
+
+message GetInfomationResponse{
+  Status status = 1;
+  Infomation info = 2;
+}
+
+
+
+message UserInfomationLikeRequest {
+  int64 user_id = 1;
+  int64 like_id = 2;
+  bool if_like = 4;
+}
+
+message UserInfomationLikeResponse {
+  Status status = 1;
+}
+
+
+message UserInfomationCollectionRequest {
+  int64 user_id = 1;
+  int64 collection_id = 2;
+  bool if_collection = 4;
+}
+
+message UserInfomationCollectionResponse {
+  Status status = 1;
+}
+
+
+message ListActicleCategorysRequest {
+}
+
+
+message ActicleCategory {
+  int64 category_id = 1;
+  string name = 2;
+}
+message ListActicleCategorysResponse {
+  Status status = 1;
+  repeated ActicleCategory list = 2;
+}
+
+
+message GetActicleConfigRequest {
+  int64 category_id = 1;
+}
+
+message ArticleTheme {
+    int64 theme_id = 1;
+    int64 category_id = 2;
+    int64 tag_id = 3;
+    string title = 4;
+    string desc = 5;
+    string bannerl_url = 6;
+    int64 used_count = 7 [(gogoproto.jsontag) = "used_count"];
+    int64 view_count = 8 [(gogoproto.jsontag) = "view_count"];
+    int64 create_time = 9;
+    string tag_name = 10;
+    string image_url = 11;
+}
+
+message GetActicleConfigResponse {
+  Status status = 1;
+  repeated Banner list_banners = 2;
+  repeated ArticleTheme list_themes = 3;
+}
+
+
+message ListActiclesByCategoryRequest {
+  int64 category_id = 1;
+  int64 page = 2;
+  int64 page_size = 3;
+  int64 user_id = 4;
+}
+
+message Article {
+  int64  article_id = 1;
+  int64  category_id = 2;
+  int64  user_id = 3;
+  string  title = 4;
+  int64  create_time = 5;
+  int64  like_count = 6 [(gogoproto.jsontag) = "like_count"];
+  int64  comment_count = 7 [(gogoproto.jsontag) = "comment_count"];
+  int64  collect_count = 8 [(gogoproto.jsontag) = "collect_count"];
+  int64  share_count = 9 [(gogoproto.jsontag) = "share_count"];
+  int64  view_count = 11 [(gogoproto.jsontag) = "view_count"];
+  repeated string list_tags = 12;
+  string image_url = 14;
+  string content = 15;
+  string avatar =  16;
+  string nick_name =  17;
+  bool if_like = 18  [(gogoproto.jsontag) = "if_like"];
+  bool if_collection = 19 [(gogoproto.jsontag) = "if_collection"];
+  int64 image_width = 20;
+  int64 image_height = 21;
+  repeated ArticleTag list_article_tags = 22;
+
+}
+
+enum ActicleStatus {
+  acticle_status_default = 0; //待审核
+  acticle_status_author_pass = 1; //审核通过
+  acticle_status_author_reject = -1; //审核驳回
+
+}
+
+
+message ListActiclesByCategoryResponse {
+  Status status = 1;
+  repeated Article list = 2;
+}
+
+message GetArticleRequest {
+  int64 user_id = 1;
+  int64 article_id = 2;
+}
+
+message GetArticleResponse {
+  Status status = 1;
+  Article info = 2;
+}
+
+message UserArticleLikeRequest {
+  int64 user_id = 1;
+  int64 like_id = 2;
+  bool if_like = 4;
+}
+
+message UserArticleLikeResponse {
+  Status status = 1;
+}
+
+message UserArticleCollectionRequest {
+  int64 user_id = 1;
+  int64 collection_id = 2;
+  bool if_collection = 4;
+}
+
+message UserArticleCollectionResponse {
+  Status status = 1;
+}
+
+message GetArticleThemeRequest {
+  int64 theme_id = 2;
+}
+
+
+message GetArticleThemeResponse {
+  Status status = 1;
+  ArticleTheme info = 2;
+}
+
+message ArticleTag {
+  int64 tag_id = 1;
+  string tag_name = 2;
+   int64 used_count = 3  [(gogoproto.jsontag) = "used_count"];
+   int64 view_count = 4  [(gogoproto.jsontag) = "view_count"];
+}
+
+message GetArticleTagRequest {
+    int64 tag_id = 1;
+}
+
+message GetArticleTagResponse {
+  Status status = 1;
+  ArticleTag info = 2;
+}
+
+message ListActiclesByTagRequest {
+  repeated int64 list_tag_ids = 1;
+  int64 page = 2;
+  int64 page_size = 3;
+  int64 user_id = 4;
+  bool if_new = 5;
+}
+
+message ListActiclesByTagResponse {
+  Status status = 1;
+  repeated Article list = 2;
+}
+
+message ListUserArticlesRequest {
+  int64 page = 2;
+  int64 page_size = 3;
+  int64 user_id = 4;
+  int64 release_user_id = 5;
+}
+
+message ListUserArticlesResponse {
+  Status status = 1;
+  repeated Article list = 2;
+}
+
+enum  CommentType {
+    comment_type_infomation = 0;
+    comment_type_article = 1;
+}
+
+enum CommentStatus {
+  comment_status_default = 0; //待审核
+  comment_status_author_pass = 1; //审核通过
+  comment_status_author_reject = -1; //审核驳回
+}
+
+enum UserCommentLikeType {
+    User_comment_like_type_infomation = 0;
+    User_comment_like_type_article = 1;
+}
+message SendCommentRequest {
+  int64 user_id = 1;
+  string content = 2;
+  int64 comment_id = 3;
+  int64 object_id = 4;
+  CommentType comment_type = 5;
+}
+
+message SendCommentResponse {
+  Status status = 1;
+}
+
+message UserCommentLikeRequest {
+  int64 user_id = 1;
+  int64 comment_id = 3;
+  CommentType comment_type = 5;
+  bool if_like = 7;
+}
+
+message UserCommentLikeResponse {
+  Status status = 1;
+}
+
+
+message ListCommentsRequest {
+  int64 user_id = 1;
+  CommentType comment_type = 2;
+  int64 object_id = 3;
+  int64 page = 4;
+  int64 page_size = 5;
+
+}
+
+message Comment {
+  int64 comment_id = 1;
+  int64 create_time = 2;
+  int64 object_id = 3;
+  int64 release_user_id = 4 [(gogoproto.jsontag) = "release_user_id"];
+  int64 like_count = 5 [(gogoproto.jsontag) = "like_count"];
+  int64 replied_count = 6 [(gogoproto.jsontag) = "replied_count"];
+  int64 replied_user_id = 7 [(gogoproto.jsontag) = "replied_user_id"];
+  int64 replied_comment_id = 8 [(gogoproto.jsontag) = "replied_comment_id"];
+  string content = 9;
+  bool if_like = 10 [(gogoproto.jsontag) = "if_like"];
+  string avatar =  11;
+  string nick_name =  12;
+}
+
+message ListCommentsResponse {
+  Status status = 1;
+  repeated Comment list = 2;
+}
+
+
+message CheckUserFollwRequest {
+  int64 user_id = 1;
+  int64 follow_user_id = 2;
+}
+
+message CheckUserFollwResponse {
+  Status status = 1;
+  bool if_follow = 2 [(gogoproto.jsontag) = "if_follow"];
+}
+
+
+message ListMessagesRequest {
+  int64 user_id = 1;
+  int64 page = 2;
+  int64 page_size = 3;
+}
+
+enum MessageReadStatus {
+    message_un_read_status = 0;
+    message_read_status = 1;
+}
+
+message Message {
+  int64 message_id = 1;
+  int64 create_time = 2;
+  MessageReadStatus read_status = 3[(gogoproto.jsontag) = "read_status"];
+  string title = 4;
+  string content = 5;
+  string avatar = 6;
+}
+
+message ListMessagesResponse  {
+  Status status = 1;
+  repeated Message list = 2;
+}
+
+enum FishingOrderPayType {
+    fishing_order_pay_type_coin = 0;
+    fishing_order_pay_type_point = 1;
+}
+
+enum FishingGoodsType {
+  fishing_goods_type_infomotion = 0;
+  fishing_order_pay_type_article = 1;
+}
+
+
+message CreateInfomationOrderRequest {
+  int64 user_id = 1;
+  int64 infomation_id = 2;
+  FishingOrderPayType pay_type = 4;
+
+}
+
+message CreateInfomationOrderResponse {
+  Status status = 1;
+  InfomationOrder info = 2;
+}
+
+message InfomationOrder {
+  int64 order_id = 1;
+  int64 user_id = 2;
+  int64 infomation_id = 3;
+  FishingOrderPayType pay_type = 4 [(gogoproto.jsontag) = "pay_type"];
+  int64 price = 5 [(gogoproto.jsontag) = "price"];
+  int64 create_time = 6;
+  Infomation info = 7;
+
+}
+
+message GetInfomationOrderRequest {
+  int64 user_id = 1;
+  int64 infomation_id = 2;
+}
+
+message GetInfomationOrderResponse {
+  Status status = 1;
+  InfomationOrder order_info = 2;
+}
+
+message CheckInfomationOrderBuyRequest {
+  int64 user_id = 1;
+  int64 infomation_id = 2;
+}
+
+message CheckInfomationOrderBuyResponse {
+  Status status = 1;
+  bool if_buy = 2 [(gogoproto.jsontag) = "if_buy"];
+}
+
+
+message UserMessageReadRequest {
+  int64 user_id = 1;
+  int64 message_id = 2;
+}
+
+message UserMessageReadResponse {
+  Status status = 1;
+}
+message UserMessageReadAllRequest {
+  int64 user_id = 1;
+}
+message UserMessageReadAllResponse {
+  Status status = 1;
+}
+
+
+
+message GetUserMessageUnCountRequest {
+  int64 user_id = 1;
+}
+
+message GetUserMessageUnCountResponse {
+  Status status = 1;
+  int64 un_count = 2;
+}
+
+message ListUserInfomationOrdersRequest {
+  int64 user_id = 1;
+  int64 page = 2;
+  int64 page_size = 3;
+}
+
+message ListUserInfomationOrdersResponse {
+  Status status = 1;
+  repeated InfomationOrder list = 2;
+}
+
+
+message DeleteInfomationRequest {
+  int64 user_id = 1;
+  int64 infomation_id = 2;
+}
+
+message DeleteInfomationResponse {
+  Status status = 1;
+}
+
+message DeleteArticleRequest {
+  int64 user_id = 1;
+  int64 article_id = 2;
+}
+
+message DeleteArticleResponse {
+  Status status = 1;
+}
+
+
+message ListFansRequest {
+  int64 user_id = 1;
+  int64 page = 2;
+  int64 page_size = 3;
+}
+
+message ListFansResponse {
+  Status status = 1;
+  repeated User list = 2;
+}
+
+message PubArticle {
+    int64 user_id = 1;
+    string title = 2;
+    string content  = 3;
+    int64 category_id = 4;
+    int64 image_height = 5;
+    int64 image_width = 6;
+    repeated  string tag_names = 7;
+    repeated int64 tag_ids = 8;
+    string image_url = 9;
+}
+
+message CreateArticleRequest {
+  int64 user_id = 1;
+  PubArticle info = 2;
+}
+
+message CreateArticleResponse {
+  Status status = 1;
+}

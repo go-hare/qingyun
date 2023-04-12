@@ -1,0 +1,17 @@
+Etcd:
+  Address:
+    - 127.0.0.1:2379
+  RegisterTTL: 50
+  RegisterInterval: 17
+DBInfo:
+  Host: 127.0.0.1:3306
+  User: root
+  Pass: root
+  DBName: realmicro_web
+  IfShowSql: true
+  IfSyncDB: true
+ServiceName: MobileAccount
+Address: :8081
+Project: Qingyun
+Env: prod
+Version: 0.0.1

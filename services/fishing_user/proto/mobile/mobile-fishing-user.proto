@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package fishing_user;
+
+option go_package = "proto/mobile;mobile_fishing_user";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.populate_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+enum StatusCode {
+  status_success = 0;
+  status_internal_error = 1;
+  status_param_error = 2;
+}
+
+message Status {
+  StatusCode code = 1 [(gogoproto.jsontag) = "code"];
+  string msg = 2;
+}
+
+enum ClientPlatformType {
+  client_wechat_platform = 0;
+}
+
+
+// The greeting service definition.
+service MobileFishingUserService {
+  // Sends a greeting
+  rpc RefreshToken (RefreshTokenRequest) returns (RefreshTokenResponse)  {}
+
+  rpc WechatLogin (WechatLoginRequest)  returns (WechatLoginResponse)  {}
+
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {}
+}
+
+// The request message containing the user's name.
+message RefreshTokenRequest {
+  int64 user_id = 3;
+}
+
+// The response message containing the greetings
+message RefreshTokenResponse {
+  Status status = 1;
+}
+
+
+message WechatLoginRequest {
+  string jscode = 1;
+}
+
+message WechatLoginResponse {
+  Status status = 1;
+  string jwt = 2;
+  int64 user_id = 3;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+}
+
+message User {
+  int64 user_id = 1;
+  string avatar =  2;
+  string mobile =  3;
+  string nick_name =  4;
+}
+
+message GetUserResponse {
+  Status status = 1;
+  User info = 2;
+}

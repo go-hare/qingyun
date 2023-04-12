@@ -1,0 +1,139 @@
+.top-buffer { margin-top: 20px; }
+
+.tree li {
+    margin: 0 0;
+
+    list-style-type: none;
+    position: relative;
+    padding: 5px 5px 0 5px;
+}
+
+.tree li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    right: auto;
+    left: -20px;
+    border-left: 1px solid #ccc;
+    bottom: 50px;
+}
+.tree li::after {
+    content: '';
+    position: absolute;
+    top: 30px;
+    width: 25px;
+    height: 20px;
+    right: auto;
+    left: -20px;
+    border-top: 1px solid #ccc;
+}
+
+.tree li .node {
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #666;
+    font-family: arial, verdana, tahoma;
+    font-size: 11px;
+    border-radius: 5px;
+}
+
+.tree li .btn-group-hide {
+    display: none;
+}
+
+.tree li .btn-group-show {
+    display: inline-block;
+}
+
+.tree > ul > li::before, .tree > ul > li::after{
+    border: 0;
+}
+
+.tree li:last-child::before{
+    height: 30px;
+}
+
+/*.tree li a:hover,*/
+/*.tree li a:hover+ul li a,*/
+/*.tree li a:hover~.prop-block {*/
+    /*background: #c8e4f8; color: #000; border: 1px solid #94a0b4;*/
+/*}*/
+
+/*.tree li a:hover+ul li::after,*/
+/*.tree li a:hover+ul li::before,*/
+/*.tree li a:hover+ul::before,*/
+/*.tree li a:hover+ul ul::before {*/
+    /*border-color:  #94a0b4;*/
+/*}*/
+
+.prop-block {
+    border: solid 1px silver;
+    border-radius: 5px;
+    padding: 4px;
+}
+
+.tree > ul {
+    padding: 0;
+}
+
+.toggle-icon {
+    cursor: pointer;
+}
+
+.active-node {
+    background-color: #222222 !important;
+    color: white !important;
+    font-weight:bold;
+    border: 2px solid #222222 !important;
+}
+
+.active-node ~ ul a {
+    background-color: #222222 !important;
+    color: white !important;
+}
+
+.odd-row {
+    background: #FFFFFF;
+}
+
+/*.property-table tr:hover{*/
+    /*background: #BBBBBB;*/
+/*}*/
+
+.col-md-6 .col-md-6 {
+    height: calc(100% - 140px);
+}
+
+.row.top-buffer {
+    height: 100%;
+}
+
+.container-fluid.ng-scope {
+    height: 100%;
+}
+
+html, body {
+    height: 100%;
+}
+
+.alert {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+}
+
+.odd-row td {
+    white-space: nowrap;
+}
+
+.odd-row .btn-group-td {
+    width: 50px;
+}
+
+.btn-list {
+    height: 22px;
+}

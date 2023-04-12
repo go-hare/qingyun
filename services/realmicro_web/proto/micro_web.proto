@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package micro_web;
+
+option go_package = "proto;micro_web";
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.populate_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+service MicroWeb {
+    rpc ProjectAlias(ProjectAliasRequest) returns (ProjectAliasResponse) {}
+}
+
+enum StatusCode {
+    status_success = 0;
+    status_internal_error = 1;
+    status_param_error = 2;
+}
+
+message Status {
+    StatusCode code = 1 [(gogoproto.jsontag) = "code"];
+    string msg = 2;
+}
+
+message ProjectAliasRequest {
+    int64 opr_user = 1;
+    string gateway = 2;
+    string gateway_alias = 3;
+}
+
+message ProjectAliasResponse {
+    Status status = 1;
+}
