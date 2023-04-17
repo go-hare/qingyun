@@ -1,0 +1,75 @@
+
+syntax = "proto3";
+
+package mobile_chat_gpt;
+
+option go_package = "proto/mobile;mobile-chat-gpt";
+
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.populate_all) = true;
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.marshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+
+enum StatusCode {
+  status_success = 0;
+  status_internal_error = 1;
+  status_param_error = 2;
+}
+message Status {
+  StatusCode code = 1 [(gogoproto.jsontag) = "code"];
+  string msg = 2;
+}
+
+service MobileChatGptService {
+  rpc ListCategoryAndModels(ListCategoryAndModelsRequest) returns (ListCategoryAndModelsResponse) {}
+  rpc QuestionGptStream(QuestionGptStreamRequest) returns (stream QuestionGptStreamResponse) {}
+}
+
+message Tutorial {
+  string name = 1;
+  string desc = 2;
+}
+
+
+message Model {
+  int64 model_id = 1 [(gogoproto.jsontag) = "model_id"];
+  int64 category_id = 2 [(gogoproto.jsontag) = "category_id"];
+  string name = 3 [(gogoproto.jsontag) = "name"];
+  string icon = 4 [(gogoproto.jsontag) = "icon"];
+  int64 create_time = 5 [(gogoproto.jsontag) = "create_time"];
+  string title = 6 [(gogoproto.jsontag) = "title"];
+  string desc = 7 [(gogoproto.jsontag) = "desc"];
+  int64 click_number = 8 [(gogoproto.jsontag) = "click_number"];
+  repeated Tutorial list_tutorial = 9 [(gogoproto.jsontag) = "list_tutorial"];
+}
+
+
+message Category {
+  int64 category_id = 1 [(gogoproto.jsontag) = "category_id"];
+  string name = 2 [(gogoproto.jsontag) = "name"];
+  string icon = 3 [(gogoproto.jsontag) = "icon"];
+  int64 create_time = 4 [(gogoproto.jsontag) = "create_time"];
+  repeated Model list_model = 5 [(gogoproto.jsontag) = "list_model"];
+}
+message ListCategoryAndModelsRequest {}
+
+message ListCategoryAndModelsResponse {
+  Status status = 1;
+  repeated Category list = 2;
+}
+
+
+message QuestionGptStreamRequest {
+  int64 user_id = 1 [(gogoproto.jsontag) = "user_id"];
+  int64 model_id = 2 [(gogoproto.jsontag) = "model_id"];
+  string question = 3 [(gogoproto.jsontag) = "question"];
+}
+
+message QuestionGptStreamResponse {
+  Status status = 1;
+  string answer = 2 [(gogoproto.jsontag) = "answer"];
+}

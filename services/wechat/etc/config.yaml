@@ -1,0 +1,18 @@
+Hosts:
+  Etcd:
+    Address:
+      - 127.0.0.1:2379
+    RegisterTTL: 50
+    RegisterInterval: 17
+  Mysql:
+    Host: 127.0.0.1:3306
+    User: root
+    Pass: root
+    DBName: qingyun_wechat
+    IfShowSql: true
+    IfSyncDB: true
+ServiceName: QingyunWechat
+Project: Qingyun
+HttpHost: :9090
+Env: prod
+Version: 0.0.1
