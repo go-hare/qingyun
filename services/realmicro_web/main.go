@@ -81,7 +81,6 @@ func main() {
 	r := mux.NewRouter()
 	s := &Server{r}
 	h = s
-
 	s.HandleFunc("/", mhttp.RegistryHandler)
 	s.HandleFunc("/registry", mhttp.RegistryHandler)
 	s.HandleFunc("/call", mhttp.CallHandler)
